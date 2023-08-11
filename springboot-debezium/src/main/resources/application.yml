@@ -1,0 +1,28 @@
+server:
+  port: 8848
+
+spring:
+  application:
+    name: springboot-denezium
+#  datasource:
+#    #    driver-class-name: oracle.jdbc.OracleDriver
+#    #    url: jdbc:oracle:thin:@10.253.50.239:1521/its
+#    #    username: core
+#    #    password: core
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/CORE_TX?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2b8&allowMultiQueries=true
+#    username: root
+#    password: 1wsx2qaz@
+
+debezium:
+  datasource:
+    hostname: localhost
+    port: 3306
+    user: root
+    password: 1wsx2qaz@
+    tableWhitelist: rfnm.DL_BASKET_ORDER
+    flushInterval: 10000
+    serverId: 1
+    serverName: name-1
+    storageFile: debezium/test/offsets/offset.dat
+    historyFile: debezium/test/history/custom-file-db-history.dat
