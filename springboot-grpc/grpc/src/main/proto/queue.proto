@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+import "message_rate.proto";
+import "binding.proto";
+import "const.proto";
+
+option java_package = "org.example.grpc.api";
+
+// 服务端流模式（server-streaming RPC)
+service QueueRPCService {
+  rpc getQueue(QueueReq) returns (QueueRsp) {}
+}
+
+
+message QueueReq{
+  string name = 1;//名称
+}
+
+message QueueRsp{
+  string name = 1;//名称
+  QueueType type = 2;//类型
+  QueueState state = 3;//状态
+  bool durable = 4;//是否持久化
+  uint32 maxDeliveryCount = 5;//最大投递次数
+  repeated Binding bindings = 6;//绑定
+  MessageRate enqueued = 8;//已入队
+  MessageRate delivered = 7;//已投递
+  QueueDepth queueDepth = 9;//队列深度
+}
+
+message QueueDepth{
+  uint64 messageValue = 1;//消息数量
+  uint64 byteValue = 2;//字节数
+}
+
+
+
+

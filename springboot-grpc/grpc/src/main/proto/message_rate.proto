@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+option java_package = "org.example.grpc.api";
+
+message MessageRate {
+  uint64 messages = 1; //消息数量
+  uint32 messageRate = 2; //消息速率(每秒)
+  uint64 bytes = 3; //字节数
+  uint32 bytesRate = 4; //字节速率(每秒)
+}

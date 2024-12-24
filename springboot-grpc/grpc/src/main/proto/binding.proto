@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+option java_package = "org.example.grpc.api";
+
+message Binding {
+  string destination = 1;
+  string bindingKey = 2;
+}

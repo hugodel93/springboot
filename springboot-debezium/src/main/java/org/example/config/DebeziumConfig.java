@@ -44,10 +44,12 @@ public class DebeziumConfig {
                 //把读取进度存到本地文件
                 .with("offset.storage", FileOffsetBackingStore.class)
                 //存放读取进度的本地文件地址
-                .with("offset.storage.file.filename", storageFile)
+                .with("offset.storage", "org.apache.kafka.connect.storage.MemoryOffsetBackingStore")
+//                .with("offset.storage.file.filename", storageFile)
                 //读取进度刷新保存频率，默认1分钟
                 .with("offset.flush.interval.ms", flushInterval)
-                .with("database.history", FileDatabaseHistory.class.getName())
+//                .with("database.history", FileDatabaseHistory.class.getName())
+                .with("database.history", "io.debezium.relational.history.MemoryDatabaseHistory")
                 .with("database.history.file.filename", historyFile)
                 //快照模式，指定连接器启动时运行快照的条件
                 .with("snapshot.mode", "Schema_only")
@@ -60,9 +62,9 @@ public class DebeziumConfig {
                 .with("database.user", user)
                 .with("database.password", password)
                 //监控的数据库白名单,如果选此值，会忽略table.whitelist，然后监控此db下所有表的binlog
-                .with("database.whitelist", "rfnm")
+//                .with("database.whitelist", "test")
                 //监控的表名白名单,建议设置此值，只监控这些表的binlog
-//                .with("table.whitelist", tableWhitelist)
+                .with("table.whitelist", tableWhitelist)
                 .build();
 
     }

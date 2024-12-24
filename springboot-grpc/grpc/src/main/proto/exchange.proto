@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+import "message_rate.proto";
+import "binding.proto";
+import "const.proto";
+
+option java_package = "org.example.grpc.api";
+
+// 服务端流模式（server-streaming RPC)
+service ExchangeRPCService {
+  rpc getExchange(ExchangeReq) returns (ExchangeRsp) {}
+}
+
+message ExchangeReq{
+  string name = 1;//名称
+}
+
+message ExchangeRsp{
+  string name = 1;//名称
+  ExchangeType type = 2;//类型
+  ExchangeState state = 3;//状态
+  bool durable = 4;//是否持久化
+  string alternateExchange = 5;//备用交换器
+  uint32 producers = 6;//生产者数
+  MessageRate dropped = 7;//丢弃的消息
+  MessageRate inbound = 8;//进入的消息
+  repeated Binding bindings = 9;//绑定
+}

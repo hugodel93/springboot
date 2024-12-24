@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+option java_package = "org.example.grpc.api";
+
+enum ServerType{
+  SERVER_TYPE_UNKNOWN= 0;
+  SERVER_TYPE_BROKER = 1;
+  SERVER_TYPE_STORESERVER = 2;
+  SERVER_TYPE_CLUSTERMNG = 3;
+  SERVER_TYPE_METADATAMNG = 4;
+  SERVER_TYPE_EXCHANGE = 5;
+  SERVER_TYPE_QUEUE = 6;
+}
+
+enum ServerState{
+  SERVER_UNKNOWN = 0;
+  SERVER_STARTING = 1;
+  SERVER_RUNNING = 2;
+  SERVER_STOPPING = 3;
+  SERVER_STOPPED = 4;
+}
+
+enum ExchangeState{
+  EXCHANGE_RUNNING = 0;//运行中
+  EXCHANGE_PAUSED = 1;//暂停
+  EXCHANGE_ERROR = 2;//错误
+  EXCHANGE_UNKNOWN = 3;//未知
+}
+
+enum QueueState{
+  QUEUE_RUNNING = 0;//运行中
+  QUEUE_PAUSED = 1;//暂停
+  QUEUE_ERROR = 2;//错误
+  QUEUE_UNKNOWN = 3;//未知
+}
+
+enum QueueType{
+  NORMAL = 0;//普通队列
+  DEAD_LETTER = 1;//死信队列
+  DELAY = 2;//延迟队列
+  DELAY_DEAD_LETTER = 3;//延迟死信队列
+}
+
+enum ExchangeType{
+  DIRECT = 0;
+  FANOUT = 1;
+  TOPIC = 2;
+  HEADERS = 3;
+}

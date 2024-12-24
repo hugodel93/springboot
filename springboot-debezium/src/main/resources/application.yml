@@ -16,13 +16,13 @@ spring:
 
 debezium:
   datasource:
-    hostname: localhost
+    hostname: 10.253.50.93
     port: 3306
-    user: root
-    password: 1wsx2qaz@
-    tableWhitelist: rfnm.DL_BASKET_ORDER
+    user: its
+    password: its
+    tableWhitelist: core_tx.usr_oper_cust_auth_set,core_tx.md_sec_code
     flushInterval: 10000
-    serverId: 1
-    serverName: name-1
+    serverId: 8848
+    serverName: name-2
     storageFile: debezium/test/offsets/offset.dat
     historyFile: debezium/test/history/custom-file-db-history.dat

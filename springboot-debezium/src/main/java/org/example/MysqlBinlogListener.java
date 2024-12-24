@@ -1,6 +1,5 @@
 package org.example;
 
-import com.alibaba.fastjson.JSON;
 import io.debezium.config.Configuration;
 import io.debezium.data.Envelope;
 import io.debezium.engine.ChangeEvent;
@@ -9,6 +8,7 @@ import io.debezium.engine.format.Json;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.example.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -66,7 +66,7 @@ public class MysqlBinlogListener {
     private void receiveChangeEvent(String value) {
         if (Objects.nonNull(value)) {
             Map<String, Object> payload = getPayload(value);
-            String op = JSON.parseObject(JSON.toJSONString(payload.get("op")), String.class);
+            String op = JsonUtil.toJsonString(payload.get("op"));
             if (!(StringUtils.isBlank(op) || Envelope.Operation.READ.equals(op))) {
                 ChangeData changeData = getChangeData(payload);
                 System.out.println("changeData = " + changeData);
@@ -75,19 +75,19 @@ public class MysqlBinlogListener {
     }
 
     private static Map<String, Object> getPayload(String value) {
-        Map<String, Object> map = JSON.parseObject(value, Map.class);
-        Map<String, Object> payload = JSON.parseObject(JSON.toJSONString(map.get("payload")), Map.class);
+        Map<String, Object> map = JsonUtil.toMap(value);
+        Map<String, Object> payload = JsonUtil.toMap(JsonUtil.toJsonString(map.get("payload")));
         return payload;
     }
 
     private static ChangeData getChangeData(Map<String, Object> payload) {
-        Map<String, Object> source = JSON.parseObject(JSON.toJSONString(payload.get("source")), Map.class);
+        Map<String, Object> source = JsonUtil.toMap(JsonUtil.toJsonString(payload.get("source")));
         return ChangeData.builder()
                 .op(payload.get("op").toString())
                 .table(source.get("table").toString())
-                .after(JSON.parseObject(JSON.toJSONString(payload.get("after")), Map.class))
-                .source(JSON.parseObject(JSON.toJSONString(payload.get("source")), Map.class))
-                .before(JSON.parseObject(JSON.toJSONString(payload.get("before")), Map.class))
+                .after(JsonUtil.toMap(JsonUtil.toJsonString(payload.get("after"))))
+                .source(JsonUtil.toMap(JsonUtil.toJsonString(payload.get("source"))))
+                .before(JsonUtil.toMap(JsonUtil.toJsonString(payload.get("before"))))
                 .build();
     }
 

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+import "google/protobuf/empty.proto";
+import "exchange.proto";
+
+option java_package = "org.example.grpc.api";
+
+//unary rpc
+service ExchangeClusterRPCService {
+  rpc getExchangeCluster(google.protobuf.Empty) returns (ExchangeClusterRsp) {}
+}
+
+message ExchangeClusterRsp{
+  repeated ExchangeRsp exchanges = 1;
+}
+

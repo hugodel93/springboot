@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+import "google/protobuf/empty.proto";
+import "queue.proto";
+
+option java_package = "org.example.grpc.api";
+
+//unary rpc
+service QueueClusterRPCService {
+  rpc getQueueCluster(google.protobuf.Empty) returns (QueueClusterRsp) {}
+}
+
+message QueueClusterRsp{
+  repeated QueueRsp queues = 1;
+}
+

@@ -3,6 +3,8 @@ package org.example;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.servlet.ServletInputStream;
+
 /***
  * @Title $NAME
  * @Description:
@@ -14,5 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DebeziumApplication {
     public static void main(String[] args) {
         SpringApplication.run(DebeziumApplication.class, args);
+
     }
 }

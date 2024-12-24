@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+option java_package = "org.example.grpc.api";
+
+import "google/protobuf/any.proto";
+import "const.proto";
+
+
+// 服务端流模式（server-streaming RPC)
+service MetricRPCService {
+  rpc getTracker(MetricReq) returns (stream google.protobuf.Any) {}
+}
+
+
+message MetricReq {
+  uint32 id = 1; //组件 id
+  string name = 2; //组件名称
+  ServerType serverType = 3; //组件类型
+  uint32 type = 4; //操作类型 0：取消 1：开始
+}

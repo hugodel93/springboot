@@ -14,14 +14,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <debezium.version>1.9.7.Final</debezium.version>
         <mysql.connector.version>8.1.0</mysql.connector.version>
-        <springboot.version>2.7.14</springboot.version>
+        <springboot.version>2.3.10.RELEASE</springboot.version>
         <hutool.version>5.8.21</hutool.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <version>${springboot.version}</version>
         </dependency>
 
@@ -29,12 +29,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.13.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>2.0.38</version>
         </dependency>
 
         <dependency>
@@ -77,6 +71,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.tomcat.embed</groupId>-->
+<!--            <artifactId>tomcat-embed-core</artifactId>-->
+<!--            <version>9.0.78</version>-->
+<!--        </dependency>-->
 
     </dependencies>
 

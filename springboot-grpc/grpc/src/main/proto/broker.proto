@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+option java_package = "org.example.grpc.api";
+
+import "message_rate.proto";
+import "const.proto";
+
+// 服务端流模式（server-streaming RPC)
+service BrokerRPCService {
+    rpc getBroker(BrokerReq) returns (BrokerRsp) {}
+}
+
+message BrokerReq {
+    uint32 id = 1; //broker id
+    string name = 2; //broker名称
+}
+
+message BrokerRsp {
+    uint32 id = 1; //broker id
+    string name = 2; //broker名称
+    ServerState state = 3; //broker状态
+    uint32 weight = 4; //broker权重
+    string operateSystem = 5; //操作系统
+    string plateForm = 6; //平台
+    string brokerVersion = 7; //broker版本
+    string pid = 8; //进程id
+    MessageRate dropped = 9; //丢弃消息
+    MessageRate inbound = 10; //入站消息
+}

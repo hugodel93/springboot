@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package org.example.grpc.api;
+
+option java_package = "org.example.grpc.api";
+
+import "const.proto";
+
+// 服务端流模式（server-streaming RPC)
+service StoreServerRPCService {
+    rpc getStoreServer(StoreServerReq) returns (StoreServerRsp) {}
+}
+
+message StoreServerReq {
+    uint32 id = 1; //id
+    string name = 2; //名称
+}
+
+message StoreServerRsp {
+    uint32 id = 1; //id
+    string name = 2; //名称
+    ServerState state = 3; //状态
+    string operateSystem = 4; //操作系统
+    string plateForm = 5; //平台
+    string brokerVersion = 6; //版本
+    string pid = 7; //进程id
+}
