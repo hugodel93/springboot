@@ -3,11 +3,13 @@ package org.example;
 
 
 import org.example.exception.PredicateException;
+import org.example.impl.BooleanBetween;
 import org.example.impl.BooleanEquals;
 import org.example.impl.BooleanExists;
 import org.example.impl.BooleanFalse;
 import org.example.impl.BooleanGreaterEqual;
 import org.example.impl.BooleanGreaterThan;
+import org.example.impl.BooleanIn;
 import org.example.impl.BooleanLessEqual;
 import org.example.impl.BooleanLessThan;
 import org.example.impl.BooleanNotEquals;
@@ -41,13 +43,15 @@ public abstract class BooleanExpression extends Expression {
         _factories.put("exists", new BooleanExists());
         _factories.put("true", new BooleanTrue());
         _factories.put("false", new BooleanFalse());
+        _factories.put("in", new BooleanIn());
+        _factories.put("between", new BooleanBetween());
     }
 
     /**
      * 工厂方法
      * 此方法将使用从 _factories 映射中获得的原型，根据运算符（如 "eq"、"ne"、"lt" 等）创建一个布尔表达式（BooleanExpression）
      *
-     * @param expr  通过解析查询谓词提取的表达式列表
+     * @param expr 通过解析查询谓词提取的表达式列表
      */
     public static Expression createExpression(final List expr) throws PredicateException {
         Iterator iter = expr.listIterator();
@@ -81,18 +85,19 @@ public abstract class BooleanExpression extends Expression {
 
     /**
      * 遍历输入的表达式列表，根据对象类型来填充未评估的操作数。
-     * 如果对象是字符串，则作为键用于从对象获取属性；如果是子列表，且包含引号字符串，则将该字符串作为操作数；否则直接使用列表中的对象作为操作数
+     * 如果对象是字符串，则作为键用于从对象获取属性；如果是子列表，且包含"quote"字符串，则将该字符串作为操作数；否则直接使用列表中的对象作为操作数
      *
      * "quote":字面量字符串，或转义标记。 为了表示一个字符串应该被当作字面量处理，而不是变量，该字符串必须使用 quote 表达式进行引用。
-     * 如："eq" "employee" ["quote" "Tom"]] 表示employee的值是否为“Tom”
-     *    "eq" "employee" "Tom" 表示employee的值是否和Tom的“值”一样
+     * 如：["eq", "employee", ["quote", "Tom"]] 表示employee的值是否为“Tom”
+     * ["eq", "employee", "Tom"] 表示employee的值是否和Tom的“值”一样
      *
      * @param operandCount 表达式中的操作数数量，通常由子类传递该值.
      * @param expr         是一个表达式列表，通过解析查询谓词（query predicate）提取出来的
      */
     protected BooleanExpression(final int operandCount, final List expr) throws PredicateException {
         Iterator iter = expr.listIterator();
-        String op = (String) iter.next(); // We've already tested for hasNext() in the factory
+        //第一个是操作类型 （如 "eq"、"ne"、"lt" 等）
+        String op = (String) iter.next();
 
         _operands = new String[operandCount];
         _keys = new String[operandCount];
@@ -101,23 +106,27 @@ public abstract class BooleanExpression extends Expression {
             if (!iter.hasNext()) {
                 throw new PredicateException("Too few operands for operation: " + op);
             }
-
             Object object = iter.next();
             _operands[i] = object.toString();
-
+            //如果对象是字符串，则作为键用于从对象获取属性
             if (object instanceof String) {
                 _keys[i] = _operands[i];
                 _operands[i] = null;
             } else if (object instanceof List) {
+                //如果是子列表，且包含"quote"字符串，则将该字符串作为操作数;否则直接使用列表中的对象作为操作数
                 List sublist = (List) object;
                 Iterator subiter = sublist.listIterator();
-
-                if (subiter.hasNext() && ((String) subiter.next()).equals("quote")) {
-                    if (subiter.hasNext()) {
-                        _operands[i] = subiter.next().toString();
+                if (subiter.hasNext()) {
+                    String mark = (String) subiter.next();
+                    if ("quote".equals(mark)) {
                         if (subiter.hasNext()) {
-                            throw new PredicateException("Extra tokens at end of 'quote'");
+                            _operands[i] = subiter.next().toString();
+                            if (subiter.hasNext()) {
+                                throw new PredicateException("Extra tokens at end of 'quote'");
+                            }
                         }
+                    }else {
+                        _operands[i] = String.valueOf(object);
                     }
                 } else {
                     throw new PredicateException("Expected '[quote, <token>]'");

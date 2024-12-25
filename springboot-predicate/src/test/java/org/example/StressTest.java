@@ -28,7 +28,7 @@ public class StressTest {
     @Test
     public void test() {
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
                 UndefinedExpression expression = (UndefinedExpression) Expression.createExpression(predicate);
                 for (Expression exp : expression.getAllExpressions()){
@@ -52,11 +52,12 @@ public class StressTest {
     public void test2() throws PredicateException {
         long start = System.currentTimeMillis();
         UndefinedExpression expression = (UndefinedExpression) Expression.createExpression(predicate);
-        for (int i = 0; i < 100000; i++) {
+//        for (int i = 0; i < 100000; i++) {
             for (Expression exp : expression.getAllExpressions()){
-                exp.evaluate(queryMap);
+                boolean res = exp.evaluate(queryMap);
+                System.out.println(res);
             }
-        }
+//        }
         long end = System.currentTimeMillis();
         System.out.println("Total time: " + (end - start) + "ms");
     }

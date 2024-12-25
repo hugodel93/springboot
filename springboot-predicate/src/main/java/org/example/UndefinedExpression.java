@@ -3,6 +3,7 @@ package org.example;
 import org.example.exception.PredicateException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import java.util.Map;
  * @version: 1.0.0
  **/
 public class UndefinedExpression extends Expression {
+
+    private final Map<String, Expression> variables = new HashMap<>();
 
     private final List<Expression> _subExpressions = new ArrayList<>();
 
@@ -31,7 +34,10 @@ public class UndefinedExpression extends Expression {
         while (iter.hasNext()) {
             Object object = iter.next();
             if (object instanceof List) {
-                _subExpressions.add(createExpression((List) object));
+                List li = (List) object;
+                Expression exp = createExpression(li);
+                variables.put(li.get(1).toString(),exp);
+                _subExpressions.add(exp);
             } else {
                 throw new PredicateException("Operands of " + op + " must be Lists");
             }
@@ -40,6 +46,10 @@ public class UndefinedExpression extends Expression {
 
     public List<Expression> getAllExpressions() {
         return _subExpressions;
+    }
+
+    public Map<String, Expression> getVariables() {
+        return variables;
     }
 
     @Override

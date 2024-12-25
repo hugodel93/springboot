@@ -49,19 +49,15 @@ public final class BooleanGreaterEqual extends BooleanExpression {
     public boolean evaluate(final Map<String, Object> data) {
         populateOperands(data);
 
-        if (_operands[0] == null || _operands[1] == null)
-        {
+        if (_operands[0] == null || _operands[1] == null) {
             return false;
         }
 
-        try
-        {
+        try {
             double l = Double.parseDouble(_operands[0]);
             double r = Double.parseDouble(_operands[1]);
             return l >= r;
-        }
-        catch (NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             // If converting to double fails try a lexicographic comparison
             return _operands[0].compareTo(_operands[1]) >= 0;
         }

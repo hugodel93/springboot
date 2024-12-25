@@ -34,8 +34,19 @@ public class PredicateTest {
         queryMap.put("town", "Wuhan");
         queryMap.put("phone", "123456789");
         queryMap.put("phone2", "123456789");
+        queryMap.put("skills", "Java");
     }
 
+    @Test
+    public void test() throws PredicateException {
+//        String predicate = "['ne','phone','phone2']";
+//        String predicate = "['in', 'skills', ['Java', 'Spring', 'AWS']]";
+//        String predicate = "['between', 'age', 10 ,29]";
+        String predicate = "['re_match', 'message', ['quote', '.*broker.*']]";
+        Expression expression = Expression.createExpression(predicate);
+        boolean rest = expression.evaluate(queryMap);
+        System.out.printf("rest: %s%n", rest);
+    }
 
     @Test
     public void boolenTest() throws PredicateException {
@@ -59,18 +70,25 @@ public class PredicateTest {
         String predicate = "['undefined'," +
                 "['eq','packageName',['quote','org.example']]," +
                 "['eq','className',['quote','test']]," +
-                "['ge', '_version', ['quote', '1.0.0']], " +
-                "['ne', '_status', ['quote', 'inactive']], " +
-                "['false', '_enabled'], " +
-                "['re_match', '_message', ['quote', '.*broker.*']]," +
+                "['ge', 'version', ['quote', '1.0.0']], " +
+                "['ne', 'status', ['quote', 'inactive']], " +
+                "['false', 'enabled'], " +
+                "['re_match', 'message', ['quote', '.*broker.*']]," +
                 "['gt', 'age', 20]," +
-                "['exists', 'timestamp']" +
+                "['exists', 'timestamp']," +
+                "['in', 'skills', ['Java', 'Spring', 'AWS']]," +
+                "['and',['exists','age']," +
+                "['or',['gt','age',27],['lt','age',12]]" +
+                "]" +
                 "]";
 
         UndefinedExpression expression = (UndefinedExpression) Expression.createExpression(predicate);
-        for (Expression exp : expression.getAllExpressions()){
-            System.out.printf("exp: %s %n", exp.evaluate(queryMap));
+        for (Map.Entry<String, Expression> entry : expression.getVariables().entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue().evaluate(queryMap));
         }
+//        for (Expression exp : expression.getAllExpressions()){
+//            System.out.printf("exp: %s %n", exp.evaluate(queryMap));
+//        }
     }
 
     @Test
@@ -106,7 +124,7 @@ public class PredicateTest {
                 "['or',['gt','age',27],['lt','age',12]]" +
                 "]" +
                 "]";
-        Expression expression = Expression.createExpression(predicate2);
+        Expression expression = Expression.createExpression(predocate);
         boolean rest = expression.evaluate(queryMap);
         Assertions.assertTrue(rest);
     }
