@@ -12,9 +12,11 @@ import org.example.impl.BooleanGreaterThan;
 import org.example.impl.BooleanIn;
 import org.example.impl.BooleanLessEqual;
 import org.example.impl.BooleanLessThan;
+import org.example.impl.BooleanLike;
 import org.example.impl.BooleanNotEquals;
 import org.example.impl.BooleanRegexMatch;
 import org.example.impl.BooleanTrue;
+import org.example.impl.BooleanUnLike;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,6 +47,8 @@ public abstract class BooleanExpression extends Expression {
         _factories.put("false", new BooleanFalse());
         _factories.put("in", new BooleanIn());
         _factories.put("between", new BooleanBetween());
+        _factories.put("like", new BooleanLike());
+        _factories.put("unlike", new BooleanUnLike());
     }
 
     /**

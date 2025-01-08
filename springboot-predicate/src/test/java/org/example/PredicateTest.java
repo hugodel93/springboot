@@ -42,7 +42,8 @@ public class PredicateTest {
 //        String predicate = "['ne','phone','phone2']";
 //        String predicate = "['in', 'skills', ['Java', 'Spring', 'AWS']]";
 //        String predicate = "['between', 'age', 10 ,29]";
-        String predicate = "['re_match', 'message', ['quote', '.*broker.*']]";
+//        String predicate = "['re_match', 'message', ['quote', '.*broker.*']]";
+        String predicate = "['unlike', 'packageName', ['quote', '%abc%']]";
         Expression expression = Expression.createExpression(predicate);
         boolean rest = expression.evaluate(queryMap);
         System.out.printf("rest: %s%n", rest);
